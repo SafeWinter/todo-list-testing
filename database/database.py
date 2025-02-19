@@ -1,4 +1,3 @@
-import os
 from enum import Enum
 from typing import List, Optional
 
@@ -13,6 +12,8 @@ from sqlalchemy.orm import (
     relationship,
     sessionmaker,
 )
+
+from database.uri import uri
 
 
 class Base(DeclarativeBase):
@@ -86,9 +87,6 @@ def maybe_initialize_db(db, engine):
 
 
 def db_session():
-    uri = os.getenv("DATABASE_URL")
-    if uri.startswith("postgres://"):
-        uri = uri.replace("postgres://", "postgresql://", 1)
     engine = create_engine(uri)
 
     Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)

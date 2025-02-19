@@ -1,9 +1,10 @@
-import os
 from enum import Enum
 from typing import Optional
 
 from sqlalchemy import Integer, MetaData, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+
+from database.uri import uri
 
 
 class Base(DeclarativeBase):
@@ -41,9 +42,6 @@ class User(Base):
     disabled: Mapped[Optional[bool]]
 
 
-uri = os.getenv("DATABASE_URL")  # or other relevant config var
-if uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://", 1)
 engine = create_engine(uri)
 
 

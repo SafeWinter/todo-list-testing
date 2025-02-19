@@ -1,9 +1,10 @@
-import os
 from enum import Enum
 from typing import List, Optional
 
 from sqlalchemy import ForeignKey, Integer, UniqueConstraint, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+
+from database.uri import uri
 
 
 class Base(DeclarativeBase):
@@ -40,9 +41,6 @@ class Task(Base):
     created_by: Mapped[int] = mapped_column(ForeignKey("profile.username"))
 
 
-uri = os.getenv("DATABASE_URL")
-if uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://", 1)
 engine = create_engine(uri)
 
 Base.metadata.drop_all(engine)
